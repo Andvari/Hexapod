@@ -9,13 +9,16 @@
 #define HEXAPOD_H_
 
 #ifndef LEG_H
-#include "Leg.h"
+#include "Limb.h"
 #endif
 
 class Hexapod {
+private:
+	Limb	Limbs[NUM_LIMBS_ON_BODY];
+	char	command[NUM_LIMBS_ON_BODY*NUM_JOINTS_ON_LIMB*SIZE_COMMAND];
 public:
 	Hexapod();
-	virtual ~Hexapod();
+	~Hexapod();
 };
 
 #endif /* HEXAPOD_H_ */
