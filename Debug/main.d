@@ -1,7 +1,9 @@
-main.d: ../main.cpp ../Hexapod.h ../Leg.h ../Servo.h
+main.d: ../main.cpp ../define.h ../Joint.h ../Motion.h ../Phase.h
 
-../Hexapod.h:
+../define.h:
 
-../Leg.h:
+../Joint.h:
 
-../Servo.h:
+../Motion.h:
+
+../Phase.h:
