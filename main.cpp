@@ -13,9 +13,8 @@
  * ROTAS
  */
 
-#include "Hexapod.h"
-#include "Leg.h"
-#include "Servo.h"
+#include "define.h"
+#include "Joint.h"
 
 int main(void){
 
