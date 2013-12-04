@@ -8,14 +8,24 @@
 #include "Phase.h"
 
 Phase::Phase() {
-	value = -1;
+	value = NO_VALUE;
+}
+
+Phase::Phase(int n) {
+	value = n;
+
+	if((n < MIN_VALUE) || (n > MAX_VALUE)){ value = NO_VALUE; }
 }
 
 Phase::~Phase() {
 }
 
-void Phase :: setValue(int n){
+int Phase :: setValue(int n){
+	if((n < MIN_VALUE) || (n > MAX_VALUE)){ return ERROR; }
+
 	value = n;
+
+	return OK;
 }
 
 int Phase :: getValue(void){
@@ -23,15 +33,15 @@ int Phase :: getValue(void){
 }
 
 int Phase :: isReady(void){
-	if (value == -1) return FALSE;
-	else return TRUE;
+	if (value == NO_VALUE) return ERROR;
+	else return OK;
 }
 
 void Phase :: clear(void){
-	value = -1;
+	value = NO_VALUE;
 }
 
 void Phase :: copy(Phase ph){
-	this->value = ph.getValue();
+	value = ph.getValue();
 }
 

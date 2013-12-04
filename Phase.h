@@ -13,9 +13,10 @@
 class Phase {
 public:
 	Phase();
+	Phase(int);
 	virtual ~Phase();
 
-	void setValue(int);
+	int  setValue(int);
 	int  getValue(void);
 	int  isReady(void);
 	void clear(void);

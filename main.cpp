@@ -14,9 +14,11 @@
  */
 
 #include "define.h"
-#include "Joint.h"
+#include "Body.h"
 
 int main(void){
+
+	Body	hexa;
 
 	return 0;
 }

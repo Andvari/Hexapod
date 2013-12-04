@@ -4,33 +4,27 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../Hexapod.cpp \
+../Body.cpp \
 ../Joint.cpp \
-../Leg.cpp \
 ../Limb.cpp \
 ../Motion.cpp \
 ../Phase.cpp \
-../Servo.cpp \
 ../main.cpp 
 
 OBJS += \
-./Hexapod.o \
+./Body.o \
 ./Joint.o \
-./Leg.o \
 ./Limb.o \
 ./Motion.o \
 ./Phase.o \
-./Servo.o \
 ./main.o 
 
 CPP_DEPS += \
-./Hexapod.d \
+./Body.d \
 ./Joint.d \
-./Leg.d \
 ./Limb.d \
 ./Motion.d \
 ./Phase.d \
-./Servo.d \
 ./main.d 
 
 

@@ -14,9 +14,14 @@
 class Limb {
 public:
 	Limb();
+	Limb(int, int, int, Joint *);
 	virtual ~Limb();
 
 	int		setJoint(int, Joint);
+	int		setSide(int);
+	int		setType(int);
+	int		getSide();
+	int		getType();
 	Joint	getJoint(int);
 	int		isReady(void);
 	void	clear(void);
@@ -26,6 +31,8 @@ public:
 private:
 	int		num_joints;
 	Joint	*joints;
+	int		side;
+	int		type;
 };
 
 #endif /* LIMB_H_ */

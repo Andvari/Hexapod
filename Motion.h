@@ -14,9 +14,11 @@
 class Motion {
 public:
 	Motion();
+	Motion(int, Phase *);
 	virtual ~Motion();
 
 	int		setPhase(int, Phase);
+	int     addPhase(Phase);
 	Phase	getPhase(int);
 	int		isReady(void);
 	void	clear(void);
