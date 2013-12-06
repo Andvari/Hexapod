@@ -20,12 +20,15 @@ public:
 	int		setJoint(int, Joint);
 	int		setSide(int);
 	int		setType(int);
-	int		getSide();
-	int		getType();
+
+	void	updateState(int, int, char *);
+
 	Joint	getJoint(int);
+	int		getSide(void);
+	int		getType(void);
+
 	int		isReady(void);
 	void	clear(void);
-	void	copy(Limb);
 	int		lenght(void);
 
 private:

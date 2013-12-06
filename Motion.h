@@ -18,11 +18,11 @@ public:
 	virtual ~Motion();
 
 	int		setPhase(int, Phase);
-	int     addPhase(Phase);
+
 	Phase	getPhase(int);
+
 	int		isReady(void);
 	void	clear(void);
-	void	copy(Motion);
 	int		lenght(void);
 
 private:

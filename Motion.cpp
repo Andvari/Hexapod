@@ -17,7 +17,7 @@ Motion::Motion(int n, Phase *p){
 	num_phases = 0;
 
 	for(int i; i<n; i++){
-		phases[i].copy(p[i]);
+		phases[i] = p[i];
 	}
 
 	num_phases = n;
@@ -29,16 +29,7 @@ Motion::~Motion() {
 int Motion :: setPhase(int n, Phase p){
 	if (( n < MIN_NUM_PHASE ) || ( n > num_phases - 1 )) { return ERROR; }
 
-	phases[n].copy(p);
-	return OK;
-}
-
-int Motion :: addPhase(Phase p){
-
-	if(num_phases == MAX_NUM_PHASE){ return ERROR; }
-
-	phases[num_phases++].copy(p);
-
+	phases[n] = p;
 	return OK;
 }
 
@@ -53,7 +44,7 @@ Phase Motion :: getPhase(int n){
 }
 
 int Motion :: isReady(void){
-	if(num_phases == 0){ return WARNING; }
+	if(num_phases == 0){ return ERROR; }
 
 	for(int i=0; i<num_phases; i++){
 		if(phases[i].isReady() != OK) return ERROR;
@@ -64,15 +55,6 @@ int Motion :: isReady(void){
 
 void Motion :: clear(void){
 	num_phases = 0;
-}
-
-void Motion :: copy(Motion m){
-
-	for(int i = 0; i<m.lenght(); i++){
-		phases[i].copy(m.getPhase(i));
-	}
-
-	num_phases = m.lenght();
 }
 
 int Motion :: lenght(void){

@@ -25,8 +25,11 @@
 #define	MAX_PHASES			5
 #define	MAX_MOTIONS			10
 #define	MAX_JOINTS_ON_LIMB	3
+#define	MAX_SIDES			2
+#define	MAX_LIMBS_ON_SIDE	3
 #define	MAX_LIMBS			6
 
+#define	MAX_LEN_STATE		8
 /*
  * Phase
  */
@@ -49,9 +52,15 @@
 #define	MIN_NUM_MOTION	0
 #define MAX_NUM_MOTION	(MAX_MOTIONS-1)
 
-#define	NO_BIAS		(0x80000000)
+#define	NO_BIAS		(0x55555555)
 #define	MAX_PWM		2500
 #define	MIN_PWM		500
+
+#define MIN_NUM_CHANNEL	(1)
+#define MAX_NUM_CHANNEL	(32)
+
+#define	FORWARD		(0)
+#define	BACKWARD	(1)
 
 /*
  * Limb
@@ -63,5 +72,14 @@
 
 #define	MIN_NUM_JOINT	0
 #define	MAX_NUM_JOINT	(MAX_JOINTS_ON_LIMB-1)
+
+/*
+ * Body
+ */
+#define	NO_LIMBS		0
+#define	NO_TIME			(-1)
+
+#define MIN_TIME		500
+#define	MAX_TIME		5000
 
 #endif /* DEFINE_H_ */

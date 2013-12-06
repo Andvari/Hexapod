@@ -17,12 +17,17 @@ public:
 	virtual ~Phase();
 
 	int  setValue(int);
+	void setPWM(void);
+
 	int  getValue(void);
+	int  getValueAsPWM(void);
+
 	int  isReady(void);
 	void clear(void);
-	void copy(Phase);
+	int  lenght(void);
 private:
 	int value;
+	int *pwm;
 };
 
 #endif /* PHASE_H_ */

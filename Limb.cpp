@@ -6,10 +6,11 @@
  */
 
 #include "Limb.h"
+#include "string.h"
 
 Limb::Limb() {
 	joints = new Joint[MAX_JOINTS_ON_LIMB];
-	num_joints = 0;
+	num_joints = NO_JOINTS;
 	side = NO_SIDE;
 	type = NO_LIMB_TYPE;
 }
@@ -24,6 +25,12 @@ Limb::Limb(int s, int t, int n, Joint *j) {
 		num_joints = n;
 		for(int i=0; i<n; i++){
 			setJoint(i, j[i]);
+			if(getSide() == LEFT){
+				joints[i].setType(FORWARD);
+			}
+			else{
+				joints[i].setType(BACKWARD);
+			}
 		}
 	}
 }
@@ -34,7 +41,15 @@ Limb::~Limb() {
 int Limb :: setJoint(int n, Joint j){
 	if((n < MIN_NUM_JOINT)||(n > MAX_NUM_JOINT)) { return ERROR; }
 
-	joints[n].copy(j);
+	joints[n] = j;
+
+	if(getSide() == LEFT){
+		joints[n].setType(FORWARD);
+	}
+	else{
+		joints[n].setType(BACKWARD);
+	}
+
 	return OK;
 }
 
@@ -90,16 +105,15 @@ void Limb :: clear(void){
 	type = NO_LIMB_TYPE;
 }
 
-void Limb :: copy(Limb l){
-	for(int i=0; i<l.lenght(); i++){
-		joints[i].copy(l.getJoint(i));
-	}
-
-	num_joints = l.lenght();
-	side = l.getSide();
-	type = l.getType();
-}
-
 int Limb :: lenght(void){
 	return num_joints;
+}
+
+void Limb :: updateState(int m, int p, char *line){
+
+	line[0] = 0;
+
+	for(int i=0; i<lenght(); i++){
+		joints[i].updateState(m, p, &line[strlen(line)]);
+	}
 }

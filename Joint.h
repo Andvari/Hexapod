@@ -15,19 +15,24 @@
 class Joint {
 public:
 	Joint();
+	Joint(int, int, int, int, Motion *);			// type, bias, channel, num, motions
 	virtual ~Joint();
 
 	int		setMotion(int, Motion);
-	int		addMotion(Motion);
-	int		setType(int);
+	int		setChannel(int);
 	int		setBias(int);
-	int		getType();
+	int		setType(int);
+
+	void	updateState(int, int, char *);
+
 	Motion	getMotion(int);
+	int		getChannel(void);
 	int		getBias(void);
 	int		getType(void);
+
+
 	int		isReady(void);
 	void	clear(void);
-	void	copy(Joint);
 	int		lenght(void);
 
 private:
@@ -35,6 +40,7 @@ private:
 	Motion	*motions;
 	int		bias;
 	int		type;
+	int		channel;
 
 };
 
