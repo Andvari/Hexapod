@@ -19,13 +19,14 @@ public:
 	virtual ~Joint();
 
 	int		setMotion(int, Motion);
+	int		addMotion(Motion);
 	int		setChannel(int);
 	int		setBias(int);
 	int		setType(int);
 
 	void	updateState(int, int, char *);
 
-	Motion	getMotion(int);
+	Motion*	getMotion(int);
 	int		getChannel(void);
 	int		getBias(void);
 	int		getType(void);
@@ -34,10 +35,11 @@ public:
 	int		isReady(void);
 	void	clear(void);
 	int		lenght(void);
+	void	print(void);
 
 private:
 	int		num_motions;
-	Motion	*motions;
+	Motion	motions[MAX_MOTIONS];
 	int		bias;
 	int		type;
 	int		channel;

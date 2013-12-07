@@ -18,16 +18,18 @@ public:
 	virtual ~Motion();
 
 	int		setPhase(int, Phase);
+	int		addPhase(Phase);
 
-	Phase	getPhase(int);
+	Phase*	getPhase(int);
 
 	int		isReady(void);
 	void	clear(void);
 	int		lenght(void);
+	void	print(void);
 
 private:
 	int num_phases;
-	Phase *phases;
+	Phase phases[MAX_PHASES];
 };
 
 #endif /* MOTION_H_ */

@@ -6,6 +6,7 @@
  */
 
 #include "Phase.h"
+#include "stdio.h"
 
 Phase::Phase() {
 
@@ -38,8 +39,13 @@ int Phase :: getValue(void){
 	return value;
 }
 
-int Phase :: getValueAsPWM(void){
-	return pwm[value];
+int Phase :: getValueAsPWM(int d){
+	if(d == FORWARD){
+		return pwm[value];
+	}
+	else{
+		return pwm[MAX_POSITIONS - 1 - value];
+	}
 }
 
 int Phase :: isReady(void){
@@ -64,4 +70,8 @@ void Phase :: setPWM(void){
 		pwm[i++] = p;
 		p += (MAX_PWM - MIN_PWM)/(MAX_POSITIONS-1);
 	}
+}
+
+void Phase :: print(void){
+	printf("\t\t\t\t\tphase value: %d\n", this->getValue());
 }

@@ -33,9 +33,10 @@
 /*
  * Phase
  */
-#define	NO_VALUE	(-1)
-#define	MIN_VALUE	(0)
-#define	MAX_VALUE	(MAX_POSITIONS-1)
+#define	NO_VALUE		(-1)
+#define	MIN_VALUE		(0)
+#define	MAX_VALUE		(MAX_POSITIONS-1)+1
+#define Z_VALUE			(9)
 
 /*
  * Motion
@@ -78,6 +79,9 @@
  */
 #define	NO_LIMBS		0
 #define	NO_TIME			(-1)
+
+#define	MIN_NUM_LIMBS	0
+#define	MAX_NUM_LIMBS	(MAX_LIMBS-1)
 
 #define MIN_TIME		500
 #define	MAX_TIME		5000

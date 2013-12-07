@@ -7,16 +7,15 @@
 
 #include "Limb.h"
 #include "string.h"
+#include "stdio.h"
 
 Limb::Limb() {
-	joints = new Joint[MAX_JOINTS_ON_LIMB];
 	num_joints = NO_JOINTS;
 	side = NO_SIDE;
 	type = NO_LIMB_TYPE;
 }
 
 Limb::Limb(int s, int t, int n, Joint *j) {
-	joints = new Joint[MAX_JOINTS_ON_LIMB];
 
 	setSide(s);
 	setType(t);
@@ -43,21 +42,22 @@ int Limb :: setJoint(int n, Joint j){
 
 	joints[n] = j;
 
-	if(getSide() == LEFT){
-		joints[n].setType(FORWARD);
-	}
-	else{
-		joints[n].setType(BACKWARD);
-	}
+	return OK;
+}
+
+int Limb :: addJoint(Joint j){
+	if((num_joints < MIN_NUM_JOINT)||(num_joints > MAX_NUM_JOINT)) { return ERROR; }
+
+	joints[num_joints++] = j;
 
 	return OK;
 }
 
-Joint Limb :: getJoint(int n){
-	Joint j;
+Joint* Limb :: getJoint(int n){
+	Joint *j = new Joint();
 
 	if(n < num_joints){
-		return joints[n];
+		return &joints[n];
 	}
 
 	return j;
@@ -110,10 +110,20 @@ int Limb :: lenght(void){
 }
 
 void Limb :: updateState(int m, int p, char *line){
+	int i;
 
 	line[0] = 0;
 
-	for(int i=0; i<lenght(); i++){
-		joints[i].updateState(m, p, &line[strlen(line)]);
+	for(i=0; i<lenght(); i++){
+		this->getJoint(i)->updateState(m, p, &line[strlen(line)]);
+	}
+}
+
+void Limb :: print(void){
+	printf("\t\tside: %d type: %d\n", side, type);
+	printf("\t\tnum_joints: %d\n", num_joints);
+	for(int i=0; i<num_joints; i++){
+		printf("\t\tjoint: %d\n", i);
+		this->getJoint(i)->print();
 	}
 }

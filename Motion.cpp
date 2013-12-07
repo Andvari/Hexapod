@@ -6,17 +6,16 @@
  */
 
 #include "Motion.h"
+#include "stdio.h"
 
 Motion::Motion() {
-	phases = new Phase[MAX_PHASES];
 	num_phases = 0;
 }
 
 Motion::Motion(int n, Phase *p){
-	phases = new Phase[MAX_PHASES];
 	num_phases = 0;
 
-	for(int i; i<n; i++){
+	for(int i=0; i<n; i++){
 		phases[i] = p[i];
 	}
 
@@ -33,11 +32,18 @@ int Motion :: setPhase(int n, Phase p){
 	return OK;
 }
 
-Phase Motion :: getPhase(int n){
-	Phase p;
+int Motion :: addPhase(Phase p){
+	if (( num_phases < MIN_NUM_PHASE ) || ( num_phases > MAX_NUM_PHASE)) { return ERROR; }
+
+	phases[num_phases++] = p;
+	return OK;
+}
+
+Phase* Motion :: getPhase(int n){
+	Phase *p = new Phase();
 
 	if(n < num_phases){
-		return phases[n];
+		return &phases[n];
 	}
 
 	return p;
@@ -59,4 +65,13 @@ void Motion :: clear(void){
 
 int Motion :: lenght(void){
 	return num_phases;
+}
+
+void Motion :: print(void){
+	printf("\t\t\t\tnum_phases: %d\n", num_phases);
+
+	for(int i=0; i<num_phases; i++){
+		printf("\t\t\t\tphase %d:\n", i);
+		this->getPhase(i)->print();
+	}
 }

@@ -12,10 +12,8 @@
 #include "stdio.h"
 
 Body::Body() {
-	limbs = new Limb[MAX_LIMBS];
 	num_limbs = NO_LIMBS;
-	//time = NO_TIME;
-	time = 1234;
+	time = NO_TIME;
 }
 
 Body::Body(int t, int n, Limb *l){
@@ -42,6 +40,12 @@ int Body :: setLimb(int n, Limb l){
 	}
 }
 
+int Body :: addLimb(Limb l){
+	if((num_limbs < MIN_NUM_LIMBS) || (num_limbs > MAX_NUM_LIMBS)){ return ERROR; }
+	limbs[num_limbs++] = l;
+	return OK;
+}
+
 int Body::setTime(int t){
 
 	if( (t < MIN_TIME) || (t > MAX_TIME) ) { return ERROR; }
@@ -50,17 +54,19 @@ int Body::setTime(int t){
 	return OK;
 }
 
-Limb Body :: getLimb(int n){
-	Limb l;
+Limb* Body :: getLimb(int n){
+	Limb *l = new Limb();
 
 	if(n < num_limbs){
-		return limbs[n];
+		return &limbs[n];
 	}
 
 	return l;
 }
 
 int Body :: isReady(void){
+	if(time == NO_TIME) { return ERROR; }
+
 	for(int i=0; i<num_limbs; i++){
 		if(limbs[i].isReady() != OK) return ERROR;
 	}
@@ -80,23 +86,35 @@ int Body :: lenght(void){
 void Body :: updateState(int m, int p, char *line){
 	int i;
 	char c;
+	int flag;
 
 	line[0] = 0;
 
-	for(int i=0; i<lenght(); i++){
-		limbs[i].updateState(m, p, &line[strlen(line)]);
+	for(i=0; i<lenght(); i++){
+		this->getLimb(i)->updateState(m, p, &line[strlen(line)]);
 	}
 
 	i = strlen(line);
 
 	line[i++] = 'T';
 
-	if((c = (int)(time%100000/10000)) != 0) { line[i++] = 48 + c; }
-	if((c = (int)(time%10000/1000)) != 0) { line[i++] = 48 + c; }
-	if((c = (int)(time%1000/100)) != 0) { line[i++] = 48 + c; }
-	if((c = (int)(time%100/10)) != 0) { line[i++] = 48 + c; }
-	if((c = (int)(time%10/1)) != 0) { line[i++] = 48 + c; }
+	flag = 1;
+
+	if(((c = (int)(time%100000/10000)) != 0) || (flag == 0)) { line[i++] = 48 + c; flag = 0; }
+	if(((c = (int)(time%10000/1000)) != 0) || (flag == 0)) { line[i++] = 48 + c; flag = 0; }
+	if(((c = (int)(time%1000/100)) != 0) || (flag == 0)) { line[i++] = 48 + c; flag = 0; }
+	if(((c = (int)(time%100/10)) != 0) || (flag == 0)) { line[i++] = 48 + c; flag = 0; }
+	if(((c = (int)(time%10/1)) != 0)||(flag == 0)) { line[i++] = 48 + c; flag = 0; }
 
 	line[i++] = 0;
 
+}
+
+void Body :: print(void){
+	printf("\ttime: %d\n", time);
+	printf("\tnum_limbs: %d\n", num_limbs);
+	for(int i=0; i<num_limbs; i++){
+		printf("\tlimb: %d\n", i);
+		this->getLimb(i)->print();
+	}
 }

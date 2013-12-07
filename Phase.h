@@ -20,11 +20,13 @@ public:
 	void setPWM(void);
 
 	int  getValue(void);
-	int  getValueAsPWM(void);
+	int  getValueAsPWM(int);
 
 	int  isReady(void);
 	void clear(void);
 	int  lenght(void);
+	void print(void);
+
 private:
 	int value;
 	int *pwm;

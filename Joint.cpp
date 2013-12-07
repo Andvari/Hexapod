@@ -8,16 +8,15 @@
 #include "Joint.h"
 #include "stdlib.h"
 #include "string.h"
+#include "stdio.h"
 
 Joint::Joint() {
-	motions = new Motion[MAX_MOTIONS];
 	num_motions = 0;
 	setType(NO_TYPE);
 	setBias(NO_BIAS);
 }
 
 Joint::Joint(int t, int b, int c, int n, Motion *m){
-	motions = new Motion[MAX_MOTIONS];
 
 	setType(t);
 	setBias(b);
@@ -40,6 +39,13 @@ int Joint :: setMotion(int n, Motion m){
 	return OK;
 }
 
+int Joint :: addMotion(Motion m){
+	if((num_motions < MIN_NUM_MOTION) || ( num_motions > MAX_NUM_MOTION )){ return ERROR; }
+
+	motions[num_motions++] = m;
+	return OK;
+}
+
 int Joint :: setChannel(int c){
 	if((c<MIN_NUM_CHANNEL)||(c>MAX_NUM_CHANNEL)) { return ERROR; }
 	channel = c;
@@ -58,11 +64,11 @@ int Joint :: setBias(int b){
 	return OK;
 }
 
-Motion Joint :: getMotion(int n){
-	Motion m;
+Motion* Joint :: getMotion(int n){
+	Motion *m = new Motion();
 
 	if(n < num_motions){
-		return motions[n];
+		return &motions[n];
 	}
 
 	return m;
@@ -107,19 +113,17 @@ int Joint :: lenght(void){
 void Joint :: updateState(int m, int p, char *line){
 	int pwm;
 	int i;
-	char c;
+	int flag;
+	int c;
 
-	if(this->type == FORWARD){
-		pwm = getMotion(m).getPhase(p).getValueAsPWM() + this->getBias();
-	}
-	else{
-		pwm = getMotion(m).getPhase(MAX_PHASES - p).getValueAsPWM() + this->getBias();
-	}
+	pwm = getMotion(m)->getPhase(p)->getValueAsPWM(this->getType()) + this->getBias();
 
 	if(pwm < MIN_PWM){ pwm = MIN_PWM; }
 	if(pwm > MAX_PWM){ pwm = MAX_PWM; }
 
 	i=0;
+
+	if(this->getMotion(m)->getPhase(p)->getValue() == Z_VALUE) return;
 
 	if(channel >= 10){
 		line[i++] = 48 + (int)(channel/10);
@@ -129,11 +133,23 @@ void Joint :: updateState(int m, int p, char *line){
 
 	line[i++] = 'P';
 
-	if ((c = (int)(pwm%10000/1000)) != 0) { line[i++] = 48 + c; }
-	if ((c = (int)(pwm%1000/100)) != 0) { line[i++] = 48 + c; }
-	if ((c = (int)(pwm%100/10)) != 0) { line[i++] = 48 + c; }
-	if ((c = (int)(pwm%10/1)) != 0) { line[i++] = 48 + c; }
+	flag = 1;
+	if(((c = (int)(pwm%100000/10000)) != 0) || (flag == 0)) { line[i++] = 48 + c; flag = 0; }
+	if(((c = (int)(pwm%10000/1000)) != 0) || (flag == 0)) { line[i++] = 48 + c; flag = 0; }
+	if(((c = (int)(pwm%1000/100)) != 0) || (flag == 0)) { line[i++] = 48 + c; flag = 0; }
+	if(((c = (int)(pwm%100/10)) != 0) || (flag == 0)) { line[i++] = 48 + c; flag = 0; }
+	if(((c = (int)(pwm%10/1)) != 0)||(flag == 0)) { line[i++] = 48 + c; flag = 0; }
+
 
 	line[i++] = 0;
 
+}
+
+void Joint :: print(void){
+	printf("\t\t\tbias: %d type: %d channel: %d\n", bias, type, channel);
+	printf("\t\t\tnum_motions: %d\n", num_motions);
+	for(int i=0; i<num_motions; i++){
+		printf("\t\t\tmotion: %d\n", i);
+		this->getMotion(i)->print();
+	}
 }
