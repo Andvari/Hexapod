@@ -9,8 +9,7 @@
 #define DEFINE_H_
 
 #define OK		0
-#define	ERROR	-1
-#define	WARNING	-2
+#define	ERROR	1
 
 #define	LEFT	0
 #define	RIGHT	1
@@ -30,6 +29,16 @@
 #define	MAX_LIMBS			6
 
 #define	MAX_LEN_STATE		8
+
+/*
+ * BoardPWM
+ */
+
+#define	NUM_PWM_CHANNELS	32
+
+#define	CHANNEL_UNUSED		0
+#define	CHANNEL_USED		1
+
 /*
  * Phase
  */

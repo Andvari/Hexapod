@@ -125,6 +125,8 @@ void Joint :: updateState(int m, int p, char *line){
 
 	if(this->getMotion(m)->getPhase(p)->getValue() == Z_VALUE) return;
 
+	line[i++] = '#';
+
 	if(channel >= 10){
 		line[i++] = 48 + (int)(channel/10);
 	}

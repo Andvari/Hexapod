@@ -19,14 +19,10 @@ public:
 
 	int		setJoint(int, Joint);
 	int		addJoint(Joint);
-	int		setSide(int);
-	int		setType(int);
 
 	void	updateState(int, int, char *);
 
 	Joint*	getJoint(int);
-	int		getSide(void);
-	int		getType(void);
 
 	int		isReady(void);
 	void	clear(void);
@@ -36,8 +32,6 @@ public:
 private:
 	int		num_joints;
 	Joint	joints[MAX_JOINTS_ON_LIMB];
-	int		side;
-	int		type;
 };
 
 #endif /* LIMB_H_ */

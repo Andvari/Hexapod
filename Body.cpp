@@ -89,10 +89,18 @@ void Body :: updateState(int m, int p, char *line){
 	int flag;
 
 	line[0] = 0;
-
+/*
 	for(i=0; i<lenght(); i++){
 		this->getLimb(i)->updateState(m, p, &line[strlen(line)]);
 	}
+*/
+
+	this->getLimb(3)->updateState(m, p, &line[strlen(line)]);
+	this->getLimb(4)->updateState(m, p, &line[strlen(line)]);
+	this->getLimb(5)->updateState(m, p, &line[strlen(line)]);
+	this->getLimb(0)->updateState(m, p, &line[strlen(line)]);
+	this->getLimb(1)->updateState(m, p, &line[strlen(line)]);
+	this->getLimb(2)->updateState(m, p, &line[strlen(line)]);
 
 	i = strlen(line);
 
@@ -106,8 +114,13 @@ void Body :: updateState(int m, int p, char *line){
 	if(((c = (int)(time%100/10)) != 0) || (flag == 0)) { line[i++] = 48 + c; flag = 0; }
 	if(((c = (int)(time%10/1)) != 0)||(flag == 0)) { line[i++] = 48 + c; flag = 0; }
 
+	//line[i++] = '\r';
+	//line[i++] = '\n';
+	line[i++] = '\x0d';
+	line[i++] = '\x0a';
 	line[i++] = 0;
 
+	printf("%s", line);
 }
 
 void Body :: print(void){
