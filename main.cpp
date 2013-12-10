@@ -94,10 +94,10 @@ int main(void){
 
 	hex.updateState(0, 0, line);
 	port.sendLine(line, time);
-	hex.updateState(0, 1, line);
-	port.sendLine(line, time);
-	hex.updateState(0, 2, line);
-	port.sendLine(line, time);
+	//hex.updateState(0, 1, line);
+	//port.sendLine(line, time);
+	//hex.updateState(0, 2, line);
+	//port.sendLine(line, time);
 
 
 	printf("Stopped\n");
