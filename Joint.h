@@ -15,35 +15,34 @@
 class Joint {
 public:
 	Joint();
-	Joint(int, int, int, int, Motion *);			// type, bias, channel, num, motions
 	virtual ~Joint();
 
-	int		setMotion(int, Motion);
-	int		addMotion(Motion);
-	int		setChannel(int);
-	int		setBias(int);
-	int		setType(int);
+	void	addMotion(Motion*);
+	void	setId(int);
+	void	setType(int);
+	void	setChannel(int);
+	void	setBias(int);
 
 	void	updateState(int, int, char *);
 
 	Motion*	getMotion(int);
-	int		getChannel(void);
-	int		getBias(void);
-	int		getType(void);
+	int		getId();
+	int		getType();
+	int		getChannel();
+	int		getBias();
 
-
-	int		isReady(void);
-	void	clear(void);
-	int		lenght(void);
-	void	print(void);
+	int		isReady();
+	void	clear();
+	int		lenght();
+	void	print();
 
 private:
-	int		num_motions;
-	Motion	motions[MAX_MOTIONS];
-	int		bias;
+	int		id;
 	int		type;
 	int		channel;
-
+	int		bias;
+	int		num_motions;
+	Motion	**motions;
 };
 
 #endif /* JOINT_H_ */

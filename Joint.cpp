@@ -6,109 +6,106 @@
  */
 
 #include "Joint.h"
-#include "stdlib.h"
-#include "string.h"
-#include "stdio.h"
 
 Joint::Joint() {
-	num_motions = 0;
-	setType(NO_TYPE);
-	setBias(NO_BIAS);
-}
-
-Joint::Joint(int t, int b, int c, int n, Motion *m){
-
-	setType(t);
-	setBias(b);
-	setChannel(c);
-
-	num_motions = n;
-
-	for(int i=0; i<n; i++){
-		motions[i] = m[i];
-	}
+	id = NO_ID;
+	channel = NO_CHANNEL_DEFINED;
+	type = NO_TYPE_DEFINED;
+	bias = NO_BIAS_DEFINED;
+	num_motions = NO_MOTIONS_DEFINED;
+	motions = NULL;
 }
 
 Joint::~Joint() {
 }
 
-int Joint :: setMotion(int n, Motion m){
-	if((n < MIN_NUM_MOTION) || ( n > MAX_NUM_MOTION )){ return ERROR; }
+void Joint :: addMotion(Motion *m){
+	Motion **tmp;
 
-	motions[n] = m;
-	return OK;
-}
+	tmp = new Motion*[num_motions];
 
-int Joint :: addMotion(Motion m){
-	if((num_motions < MIN_NUM_MOTION) || ( num_motions > MAX_NUM_MOTION )){ return ERROR; }
+	for(int i=0; i<num_motions; i++){ tmp[i] = motions[i]; }
+
+	delete motions;
+
+	motions = new Motion*[num_motions+1];
+
+	for(int i=0; i<num_motions; i++){ motions[i] = tmp[i]; }
 
 	motions[num_motions++] = m;
-	return OK;
+
+	delete tmp;
 }
 
-int Joint :: setChannel(int c){
-	if((c<MIN_NUM_CHANNEL)||(c>MAX_NUM_CHANNEL)) { return ERROR; }
-	channel = c;
-	return OK;
+void Joint :: setId(int id){ this->id = id; }
+
+void Joint :: setChannel(int c){
+
+	if((c >= MIN_NUM_CHANNEL)&&(c <= MAX_NUM_CHANNEL)){ channel = c; }
+	else{
+		printf("Joint id: %d, setChannel(%d) error\n", id, c);
+		_exit(ERROR);
+	}
 }
 
-int Joint :: setType(int t){
-	if(t == FORWARD)  { type = FORWARD; return OK; }
-	if(t == BACKWARD) { type = BACKWARD; return OK; }
-
-	return ERROR;
+void Joint :: setType(int t){
+	if((t == TYPE_FORWARD) || (t == TYPE_BACKWARD))  { type = t; }
+	else{
+		printf("Joint id: %d, setType(%d) error\n", id, t);
+		_exit(ERROR);
+	}
 }
 
-int Joint :: setBias(int b){
-	bias = b;
-	return OK;
+void Joint :: setBias(int b){
+	if((b>=MIN_BIAS)&&(b<=MAX_BIAS)){ bias = b; }
+	else{
+		printf("Joint id: %d, setBias(%d) error\n", id, b);
+		_exit(ERROR);
+	}
 }
 
 Motion* Joint :: getMotion(int n){
-	Motion *m = new Motion();
 
-	if(n < num_motions){
-		return &motions[n];
+	if(n >= num_motions){
+		printf("Joints id: %d, getMotion(%d) error\n", id, n);
+		_exit(ERROR);
 	}
 
-	return m;
+	return motions[n];
 }
 
-int Joint :: getChannel(void){
-	return channel;
-}
+int Joint :: getId() { return id; }
 
-int Joint :: getBias(void){
-	return bias;
-}
+int Joint :: getChannel(){ return channel; }
 
-int	Joint :: getType(void){
-	return type;
-}
+int Joint :: getBias(){ return bias; }
+
+int	Joint :: getType(){ return type; }
 
 int Joint :: isReady(void){
-	if(num_motions == 0){ return ERROR; }
+	if(id == NO_ID) { printf("Joint isReady() error (NO_ID)\n"); return ERROR; }
+	if(type == NO_TYPE_DEFINED) { printf("Joint id: %d, isReady() error (NO_TYPE_DEFINED)\n", id); return ERROR; }
+	if(bias == NO_BIAS_DEFINED) { printf("Joint id, %d, isReady() error (NO_BIAS_DEFINED)\n", id); return ERROR; }
+	if(channel == NO_CHANNEL_DEFINED){ printf("Joint id: %d, isReady() error (NO_CHANNEL_DEFINED)\n", id); return ERROR; }
+	if(num_motions == NO_MOTIONS_DEFINED){ printf("Joint id: %d, isReady() error (NO_MOTIONS_DEFINED)\n", id); return ERROR; }
 
 	for(int i=0; i<num_motions; i++){
-		if(motions[i].isReady() != OK) return ERROR;
+		if(motions[i]->isReady() != OK) return ERROR;
 	}
-
-	if (bias == NO_BIAS) return ERROR;
-
-	if(type == NO_TYPE) return ERROR;
 
 	return OK;
 }
 
-void Joint :: clear(void){
-	num_motions = 0;
-	bias = NO_BIAS;
-	type = NO_TYPE;
+void Joint :: clear(){
+	id = NO_ID;
+	type = NO_TYPE_DEFINED;
+	channel = NO_CHANNEL_DEFINED;
+	bias = NO_BIAS_DEFINED;;
+	num_motions = NO_MOTIONS_DEFINED;
+	delete motions;
 }
 
-int Joint :: lenght(void){
-	return num_motions;
-}
+int Joint :: lenght(void){ return num_motions; }
 
 void Joint :: updateState(int m, int p, char *line){
 	int pwm;
@@ -123,7 +120,7 @@ void Joint :: updateState(int m, int p, char *line){
 
 	i=0;
 
-	if(this->getMotion(m)->getPhase(p)->getValue() == Z_VALUE) return;
+	if(getMotion(m)->getPhase(p)->getValue() == Z_VALUE) return;
 
 	line[i++] = '#';
 
@@ -152,6 +149,6 @@ void Joint :: print(void){
 	printf("\t\t\tnum_motions: %d\n", num_motions);
 	for(int i=0; i<num_motions; i++){
 		printf("\t\t\tmotion: %d\n", i);
-		this->getMotion(i)->print();
+		getMotion(i)->print();
 	}
 }

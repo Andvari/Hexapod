@@ -14,22 +14,24 @@
 class Motion {
 public:
 	Motion();
-	Motion(int, Phase *);
+	Motion(int, int);								// id, num
 	virtual ~Motion();
 
-	int		setPhase(int, Phase);
-	int		addPhase(Phase);
+	void 	setPhase(int, Phase&);
+	void	addPhase(Phase&);
 
-	Phase*	getPhase(int);
+	Phase&	getPhase(int);
 
-	int		isReady(void);
-	void	clear(void);
-	int		lenght(void);
-	void	print(void);
+	int		isReady();
+	void	clear();
+	int		lenght();
+	void	print();
 
 private:
+	int id;
+	int max_phases;
 	int num_phases;
-	Phase phases[MAX_PHASES];
+	Phase *phases;
 };
 
 #endif /* MOTION_H_ */

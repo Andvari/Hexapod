@@ -9,17 +9,17 @@
 #include "stdio.h"
 
 Motion::Motion() {
-	num_phases = 0;
+	id = NO_ID;
+	num_phases = NO_PHASES_DEFINED;
+	phases = new int[MAX_PHASES];
 }
 
-Motion::Motion(int n, Phase *p){
-	num_phases = 0;
+Motion::Motion(int id, int n){
 
-	for(int i=0; i<n; i++){
-		phases[i] = p[i];
-	}
-
+	this->id = id;
 	num_phases = n;
+
+	phases = new int[n];
 }
 
 Motion::~Motion() {

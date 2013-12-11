@@ -19,6 +19,7 @@
 #define	BOT			2
 
 #define	NULL	0
+#define	NO_ID	(-1)
 
 #define	MAX_POSITIONS		9
 #define	MAX_PHASES			5
@@ -57,42 +58,52 @@
 /*
  * Joint
  */
-#define	NO_TYPE		(-1)
+#define	NO_TYPE_DEFINED		(-1)
+#define	NO_CHANNEL_DEFINED	(-1)
+#define	NO_MOTIONS_DEFINED	(0)
+#define	NO_BIAS_DEFINED		(0x55555555)
 
-#define	MIN_NUM_MOTION	0
-#define MAX_NUM_MOTION	(MAX_MOTIONS-1)
+#define	MIN_NUM_MOTION		(0)
+#define MAX_NUM_MOTION		(MAX_MOTIONS-1)
 
-#define	NO_BIAS		(0x55555555)
-#define	MAX_PWM		2500
-#define	MIN_PWM		500
+#define	MAX_PWM				(2500)
+#define	MIN_PWM				(500)
 
-#define MIN_NUM_CHANNEL	(1)
-#define MAX_NUM_CHANNEL	(32)
+#define	MIN_BIAS			(-500)
+#define	MAX_BIAS			(+500)
 
-#define	FORWARD		(0)
-#define	BACKWARD	(1)
+#define MIN_NUM_CHANNEL		(1)
+#define MAX_NUM_CHANNEL		(32)
+
+#define	TYPE_FORWARD		(0)
+#define	TYPE_BACKWARD		(1)
 
 /*
  * Limb
  */
-#define	NO_JOINTS		0
+#define	NO_JOINTS_DEFINED	(0)
 
-#define	NO_SIDE			(-1)
-#define	NO_LIMB_TYPE	(-1)
+#define	NO_SIDE				(-1)
+#define	NO_LIMB_TYPE		(-1)
 
-#define	MIN_NUM_JOINT	0
-#define	MAX_NUM_JOINT	(MAX_JOINTS_ON_LIMB-1)
+#define	MIN_NUM_JOINT		(0)
+#define	MAX_NUM_JOINT		(MAX_JOINTS_ON_LIMB-1)
 
 /*
  * Body
  */
-#define	NO_LIMBS		0
-#define	NO_TIME			(-1)
+#define	NO_LIMBS_DEFINED	(0)
+#define	NO_TIME_DEFINED		(-1)
 
-#define	MIN_NUM_LIMBS	0
-#define	MAX_NUM_LIMBS	(MAX_LIMBS-1)
+#define	MIN_NUM_LIMBS		(0)
+#define	MAX_NUM_LIMBS		(MAX_LIMBS-1)
 
-#define MIN_TIME		500
-#define	MAX_TIME		5000
+#define MIN_TIME			(500)
+#define	MAX_TIME			(5000)
+
+
+#include "unistd.h"
+#include "string.h"
+#include "stdio.h"
 
 #endif /* DEFINE_H_ */

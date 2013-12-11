@@ -10,65 +10,73 @@
 #include "stdio.h"
 
 Limb::Limb() {
-	num_joints = NO_JOINTS;
-}
-
-Limb::Limb(int s, int t, int n, Joint *j) {
-
-	if ((n >= MIN_NUM_JOINT) && (n <= MAX_NUM_JOINT)){
-		num_joints = n;
-		for(int i=0; i<n; i++){
-			setJoint(i, j[i]);
-		}
-	}
+	id = NO_ID;
+	num_joints = NO_JOINTS_DEFINED;
+	joints = NULL;
 }
 
 Limb::~Limb() {
 }
 
-int Limb :: setJoint(int n, Joint j){
-	if((n < MIN_NUM_JOINT)||(n > MAX_NUM_JOINT)) { return ERROR; }
+void Limb :: addJoint(Joint *j){
+	Joint **tmp;
 
-	joints[n] = j;
+	tmp = new Joint*[num_joints];
 
-	return OK;
-}
+	for(int i=0; i<num_joints; i++){ tmp[i] = joints[i]; }
 
-int Limb :: addJoint(Joint j){
-	if((num_joints < MIN_NUM_JOINT)||(num_joints > MAX_NUM_JOINT)) { return ERROR; }
+	delete joints;
+
+	joints = new Limb*[num_joints+1];
+
+	for(int i=0; i<num_joints; i++){ joints[i] = tmp[i]; }
 
 	joints[num_joints++] = j;
 
-	return OK;
+	delete tmp;
 }
+
+void Limb :: setId(int id){ this->id = id; }
 
 Joint* Limb :: getJoint(int n){
-	Joint *j = new Joint();
 
-	if(n < num_joints){
-		return &joints[n];
+	if(n >= num_joints){
+		printf("Limb id: %d, getJoint(%d) error\n", id, n);
+		_exit(ERROR);
 	}
 
-	return j;
+	return joints[n];
 }
 
+int Limb :: getId() { return id; }
+
 int Limb :: isReady(void){
-	if(num_joints == NO_JOINTS) { return ERROR; }
+	if(id == NO_ID) {
+		printf("Limb isReady() error (NO_ID)\n");
+		return ERROR;
+	}
+	if(num_joints == NO_JOINTS_DEFINED) {
+		printf("Limb id: %d, isReady() error (NO_JOINTS_DEFINED)\n", id);
+		return ERROR;
+	}
 
 	for(int i=0; i<num_joints; i++){
-		if(joints[i].isReady() != OK) return ERROR;
+		if(joints[i]->isReady() != OK){
+			printf("Limb id: %d, isReady() error (joint: %d)\n", id, i);
+			return ERROR;
+		}
 	}
 
 	return OK;
 }
 
-void Limb :: clear(void){
-	num_joints = NO_JOINTS;
+void Limb :: clear(){
+	id = NO_ID;
+	num_joints = NO_JOINTS_DEFINED;
+	delete joints;
 }
 
-int Limb :: lenght(void){
-	return num_joints;
-}
+int Limb :: lenght(){ return num_joints; }
 
 void Limb :: updateState(int m, int p, char *line){
 	int i;
@@ -76,14 +84,14 @@ void Limb :: updateState(int m, int p, char *line){
 	line[0] = 0;
 
 	for(i=0; i<lenght(); i++){
-		this->getJoint(i)->updateState(m, p, &line[strlen(line)]);
+		getJoint(i)->updateState(m, p, &line[strlen(line)]);
 	}
 }
 
-void Limb :: print(void){
+void Limb :: print(){
 	printf("\t\tnum_joints: %d\n", num_joints);
 	for(int i=0; i<num_joints; i++){
 		printf("\t\tjoint: %d\n", i);
-		this->getJoint(i)->print();
+		getJoint(i)->print();
 	}
 }

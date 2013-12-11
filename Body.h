@@ -8,31 +8,30 @@
 #ifndef BODY_H_
 #define BODY_H_
 
+#include "define.h"
 #include "Limb.h"
 
 class Body {
 public:
 	Body();
-	Body(int, int, Limb *);
 	virtual ~Body();
 
-	int		setLimb(int, Limb);
-	int		addLimb(Limb);
-	int		setTime(int);
+	void	addLimb(Limb*);
+	void    setId(int);
 	void	updateState(int, int, char*);
 
 	Limb*	getLimb(int);
-	int		getTime(void);
+	int		getId();
 
-	int		isReady(void);
-	void	clear(void);
-	int		lenght(void);
-	void	print(void);
+	int		isReady();
+	void	clear();
+	int		lenght();
+	void	print();
 
 private:
+	int id;
 	int num_limbs;
-	Limb limbs[MAX_LIMBS];
-	int time;
+	Limb **limbs;
 };
 
 #endif /* BODY_H_ */

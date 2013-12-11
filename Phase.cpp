@@ -40,7 +40,7 @@ int Phase :: getValue(void){
 }
 
 int Phase :: getValueAsPWM(int d){
-	if(d == FORWARD){
+	if(d == TYPE_FORWARD){
 		return pwm[value];
 	}
 	else{
